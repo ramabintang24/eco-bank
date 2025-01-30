@@ -2,11 +2,11 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigService } from '@nestjs/config';
-import { JwtPayload } from './interfaces/jwt-payload.interface';
+import { AdminJwtPayload } from './interfaces/admin-jwt-payload.interface'; 
 import { HelperService } from 'src/helper/helper.service';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class AdminJwtStrategy extends PassportStrategy(Strategy, 'admin-jwt') {
   constructor(
     private readonly configService: ConfigService,
     private readonly helperService: HelperService,
@@ -18,7 +18,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: extract_jwt,
       ignoreExpiration: false,
-      secretOrKey: configService.get<string>('JWT_SECRET'),
+      secretOrKey: configService.get<string>('JWT_ADMIN_ACCESS_SECRET'),
     });
   }
 
@@ -35,9 +35,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
   }
 
-  async validate(payload: JwtPayload): Promise<JwtPayload> {
+  async validate(payload: AdminJwtPayload): Promise<AdminJwtPayload> {
     return {
-      user_id: payload.user_id,
+      admin_id: payload.admin_id,
       email: payload.email,
       role: payload.role,
     };

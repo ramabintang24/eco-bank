@@ -13,7 +13,7 @@ export const dataSourceOptions: DataSourceOptions = {
   database: process.env.DB_NAME,
   schema: 'public',
   entities: ['dist/**/*.entity.js'],
-  migrations: ['dist/cracker_db_migrations/migrations/*.js'],
+  migrations: ['dist/ecobank_db_migrations/migrations/*.js'],
   synchronize: false,
 };
 

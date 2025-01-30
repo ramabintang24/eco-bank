@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { dataSourceOptions } from 'cracker_db_migrations/data-source';
+import { dataSourceOptions } from 'ecobank_db_migrations/data-source';
 
 @Module({
   imports: [TypeOrmModule.forRoot(dataSourceOptions)],

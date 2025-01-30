@@ -1,10 +1,16 @@
 // src/auth/dto/auth-user-register.dto.ts
-import { IsString, IsNotEmpty, Length } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsEmail,
+  Length,
+  MinLength,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class RegisterDto {
   @ApiProperty({
-    description: 'Nama lengkap pengguna',
+    description: 'Nama Lengkap',
     example: 'John Doe',
   })
   @IsString()
@@ -12,29 +18,32 @@ export class RegisterDto {
   name: string;
 
   @ApiProperty({
-    description: 'Nomor telepon pengguna',
-    example: '+6281234567890',
+    description: 'Email',
+    example: 'johndoe@gmail.com',
+  })
+  @IsEmail({}, { message: 'Email Tidak Valid' })
+  @IsNotEmpty({ message: 'Email Tidak Boleh Kosong' })
+  email: string;
+
+  @ApiProperty({
+    description: 'Nomor Telepon',
+    example: '081234567890',
   })
   @IsString()
-  @IsNotEmpty({ message: 'Nomor telepon tidak boleh kosong' })
-  @Length(10, 20, {
-    message: 'Nomor telepon harus terdiri dari 10 hingga 20 karakter',
+  @IsNotEmpty({ message: 'Nomor telepon Tidak Boleh Kosong' })
+  @Length(10, 13, {
+    message: 'Nomor telepon harus terdiri dari 10 hingga 13 karakter',
   })
   phone: string;
 
   @ApiProperty({
-    description: 'Kata sandi untuk akun pengguna',
-    example: 'P@ssw0rd!',
+    description: 'Kata Sandi',
+    example: '12345678',
   })
   @IsString()
-  @IsNotEmpty({ message: 'Kata sandi tidak boleh kosong' })
+  @IsNotEmpty({ message: 'Kata sandi Tidak Boleh Kosong' })
+  @MinLength(8, {
+    message: 'Password Harus Memiliki Panjang Minimal 8 Karakter',
+  })
   password: string;
-
-  @ApiProperty({
-    description: 'Peran pengguna dalam sistem',
-    example: 'admin',
-  })
-  @IsString()
-  @IsNotEmpty({ message: 'Peran tidak boleh kosong' })
-  role_id: string;
 }

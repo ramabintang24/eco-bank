@@ -1,17 +1,18 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { AuthController } from './auth.controller';
+import { UserService } from './user.service';
+import { UserController } from './user.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Auth } from './entities/auth.entity';
+import { User } from '../../user/entities/user.entity';
 import { HelperModule } from 'src/helper/helper.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
-import { LocalStrategy } from './local.strategy';
-import { JwtStrategy } from './jwt.strategy';
+import { LocalStrategy } from '../local.strategy';
+import { JwtStrategy } from '../jwt.strategy';
+import { Wallet } from 'src/transaction/entities/wallet.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Auth]),
+    TypeOrmModule.forFeature([User, Wallet]),
     HelperModule,
     JwtModule.registerAsync({
       imports: [ConfigModule], // Pastikan ConfigModule diimpor di sini jika dibutuhkan
@@ -24,8 +25,8 @@ import { JwtStrategy } from './jwt.strategy';
       }),
     }),
   ],
-  controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
-  exports: [AuthService],
+  controllers: [UserController],
+  providers: [UserService, LocalStrategy, JwtStrategy],
+  exports: [UserService],
 })
-export class AuthModule {}
+export class UserModule {}

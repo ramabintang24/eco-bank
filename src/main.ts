@@ -27,8 +27,8 @@ async function bootstrap() {
 
   if (isDebug) {
     const config = new DocumentBuilder()
-      .setTitle('Cracker Service')
-      .setDescription('API untuk service Cracker')
+      .setTitle('EcoBank Service')
+      .setDescription('API untuk service EcoBank')
       .setVersion('1.0')
       .addBearerAuth()
       .build();
@@ -36,8 +36,8 @@ async function bootstrap() {
     SwaggerModule.setup('api', app, document);
 
     const redocOptions = {
-      title: 'Cracker Service',
-      version: '1.0',
+      title: 'EcoBank Service',
+      version: '0.1',
       specUrl: '/api-json',
     };
 

@@ -46,16 +46,15 @@ export class HelperService {
   }
 
   // Combine phone, password, and salt to create a salted MD5 hash
-  public passwordSalting(name:string, phone: string, password: string): string {
-    const userToken = this.md5(this.salt + name); // Generate a user-specific token
-    const newSalted = this.md5(this.salt + name + userToken + phone); // Combine token and password
-    const fixSalted = this.md5(this.salt + phone + newSalted + password); // Combine token and password
-    return fixSalted;
+  public passwordSalting(email: string, password: string): string {
+    const userToken = this.md5(this.salt + email); // Generate a user-specific token
+    const newSalted = this.md5(this.salt + email + userToken + password); // Combine token and password
+    return newSalted;
   }
 
   // Hash the salted password using bcrypt with a dynamically generated salt
-  public async hashPassword(name:string, phone: string, password: string): Promise<string> {
-    const salted = this.passwordSalting(name, phone, password); // Generate salted password
+  public async hashPassword(email:string, password: string): Promise<string> {
+    const salted = this.passwordSalting(email, password); // Generate salted password
     const salt = await bcrypt.genSalt(10); // Generate bcrypt salt with 10 rounds
     return bcrypt.hash(salted, salt); // Return the hashed password
   }

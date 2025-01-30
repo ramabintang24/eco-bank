@@ -1,7 +1,7 @@
 // src/auth/auth.controller.ts
 import { Controller, Post, Request, Body, UseGuards} from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { LoginDto } from './dto/auth-login.dto';
+import { UserService } from './user.service';
+import { LoginDto } from '../dto/auth-login.dto';
 import {
   ApiBody,
   ApiConsumes,
@@ -9,13 +9,13 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { RegisterDto } from './dto/auth-register.dto';
+import { RegisterDto } from '../dto/auth-register.dto';
 import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('auth')
-@Controller('auth')
-export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+@Controller('auth/user')
+export class UserController {
+  constructor(private readonly userService: UserService) {}
 
   @Post('register')
   @ApiOperation({ summary: 'User Registrasi' })
@@ -30,7 +30,7 @@ export class AuthController {
   @ApiConsumes('application/x-www-form-urlencoded')
   @ApiBody({ type: RegisterDto })
   async userRegister(@Body() registerDto: RegisterDto) {
-    return this.authService.userRegister(registerDto);
+    return this.userService.userRegister(registerDto);
   }
 
   @UseGuards(AuthGuard('local'))
@@ -47,6 +47,6 @@ export class AuthController {
   @ApiConsumes('application/x-www-form-urlencoded')
   @ApiBody({ type: LoginDto })
   async userLogin(@Request() req) {
-    return this.authService.userLogin(req.user);
+    return this.userService.userLogin(req.user);
   }
 }
