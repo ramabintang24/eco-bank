@@ -19,7 +19,7 @@ export class UserService {
     private walletRepository: Repository<Wallet>,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
-    private readonly helperService: HelperService,
+    private readonly helperService: HelperService, 
   ) {}
 
   // ===> REGISTER <===
@@ -67,6 +67,9 @@ export class UserService {
     if (!user) {
       throw new NotFoundException('User tidak ditemukan');
     }
+
+    // cek rolenya dulu kalo misal role dia admin langsung di return ke servicenya admin
+    // kalo user lanjut aja
 
     // Check if the user has an associated wallet
     let wallet = await this.walletRepository.findOne({
