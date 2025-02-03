@@ -1,6 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
 export class CreateEBTableTransaction1738553935204 implements MigrationInterface {
+    name = 'CreateEBTableTransaction1738553935204';
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
@@ -21,6 +22,7 @@ export class CreateEBTableTransaction1738553935204 implements MigrationInterface
 
     public async down(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`DROP TABLE IF EXISTS "transaction"."eb_transaction"`);
+        
         await queryRunner.query(`DROP TYPE IF EXISTS "transaction"."transaction_type_enum"`);
     }
 
