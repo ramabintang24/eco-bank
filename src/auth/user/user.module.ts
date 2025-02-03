@@ -18,10 +18,10 @@ import { Wallet } from 'src/transaction/entities/wallet.entity';
       imports: [ConfigModule], // Pastikan ConfigModule diimpor di sini jika dibutuhkan
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_SECRET'),
-        // signOptions: {
-        //   expiresIn: configService.get<string>('JWT_USER_ACCESS_DURATION'),
-        // },
+        secret: configService.get<string>('JWT_USER_ACCESS_SECRET'),
+        signOptions: {
+          expiresIn: configService.get<string>('JWT_USER_ACCESS_DURATION'),
+        },
       }),
     }),
   ],
