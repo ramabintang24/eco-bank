@@ -19,9 +19,9 @@ import { Wallet } from 'src/transaction/entities/wallet.entity';
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_USER_ACCESS_SECRET'),
-        // signOptions: {
-        //   expiresIn: configService.get<string>('JWT_USER_ACCESS_DURATION'),
-        // },
+        signOptions: {
+          expiresIn: configService.get<string>('JWT_USER_ACCESS_DURATION'),
+        },
       }),
     }),
   ],
