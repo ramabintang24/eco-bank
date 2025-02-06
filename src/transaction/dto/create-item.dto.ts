@@ -1,13 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
-export class CreateAdminDto {
+export class CreateItemDto {
   @ApiProperty({ example: 'Laptop', description: 'Nama barang yang dijual', required: false })
   @IsOptional()
   @IsString()
   item?: string;
 
-  @ApiProperty({ example: 'https://example.com/laptop.jpg', description: 'URL foto produk', required: false })
+  @ApiProperty({ example: 'https://example.com/laptop.jpg', description: 'foto produk', required: false })
   @IsOptional()
   @IsString()
   product_photo?: string;
