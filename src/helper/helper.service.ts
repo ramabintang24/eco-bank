@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import * as crypto from 'crypto';
-// import { randomBytes } from 'crypto';
 import * as dotenv from 'dotenv';
 import * as bcrypt from 'bcrypt';
 
@@ -45,7 +44,7 @@ export class HelperService {
     return crypto.createHash('md5').update(data).digest('hex');
   }
 
-  // Combine phone, password, and salt to create a salted MD5 hash
+  // Combine email, password, and salt to create a salted MD5 hash
   public passwordSalting(email: string, password: string): string {
     const userToken = this.md5(this.salt + email); // Generate a user-specific token
     const newSalted = this.md5(this.salt + email + userToken + password); // Combine token and password
@@ -53,7 +52,7 @@ export class HelperService {
   }
 
   // Hash the salted password using bcrypt with a dynamically generated salt
-  public async hashPassword(email:string, password: string): Promise<string> {
+  public async hashPassword(email: string, password: string): Promise<string> {
     const salted = this.passwordSalting(email, password); // Generate salted password
     const salt = await bcrypt.genSalt(10); // Generate bcrypt salt with 10 rounds
     return bcrypt.hash(salted, salt); // Return the hashed password

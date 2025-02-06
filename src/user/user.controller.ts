@@ -37,7 +37,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @UseGuards(AuthGuard('jwt'))
-  @Get()
+  @Get('profile')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get User Profile' })
   async getProfile(@Request() request: Request): Promise<User> {
@@ -46,7 +46,7 @@ export class UsersController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Patch()
+  @Patch('profile')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Update User Profile and Avatar' })
   @ApiResponse({
@@ -83,7 +83,7 @@ export class UsersController {
 
   @ApiTags('admin')
   @UseGuards(AuthGuard('admin-jwt'))
-  @Get('list')
+  @Get('all-user')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get List All User' })
   async getListUser(@Query() queryDto: QueryUserDto) {

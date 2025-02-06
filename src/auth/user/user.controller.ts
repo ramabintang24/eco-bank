@@ -1,5 +1,5 @@
 // src/auth/auth.controller.ts
-import { Controller, Post, Request, Body, UseGuards} from '@nestjs/common';
+import { Controller, Post, Body, UseGuards} from '@nestjs/common';
 import { UserService } from './user.service';
 import { LoginDto } from '../dto/auth-login.dto';
 import {
@@ -46,7 +46,7 @@ export class UserController {
   })
   @ApiConsumes('application/x-www-form-urlencoded')
   @ApiBody({ type: LoginDto })
-  async userLogin(@Request() req) {
-    return this.userService.userLogin(req.user);
+  async userLogin(@Body() loginDto: LoginDto) {
+    return this.userService.userLogin(loginDto);
   }
 }
