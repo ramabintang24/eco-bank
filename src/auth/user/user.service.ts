@@ -8,6 +8,7 @@ import { HelperService } from 'src/helper/helper.service';
 // import { LoginDto } from './dto/auth-login.dto';
 import { RegisterDto } from '../dto/auth-register.dto';
 import { JwtPayload } from '../interfaces/jwt-payload.interface';
+import { AdminJwtPayload } from '../interfaces/admin-jwt-payload.interface';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -58,7 +59,7 @@ export class UserService {
     return await this.userLogin ( payload );
   }
 
-  // ===> LOGIN <===
+  // ===> LOGIN USER <===
   async userLogin(payload: JwtPayload) {
     
     // Cari user berdasarkan data payload
@@ -68,8 +69,9 @@ export class UserService {
       throw new NotFoundException('User tidak ditemukan');
     }
 
-    // cek rolenya dulu kalo misal role dia admin langsung di return ke servicenya admin
-    // kalo user lanjut aja
+    if (user.role === 'admin') {
+      return this.adminLogin(payload);
+    }
 
     // Check if the user has an associated wallet
     let wallet = await this.walletRepository.findOne({
@@ -95,6 +97,32 @@ export class UserService {
     access_token = this.helperService.encryptData(access_token);
 
     return { access_token, user };
+  }
+
+  // ===> LOGIN ADMIN<===
+  async adminLogin(payload: AdminJwtPayload) {
+    
+    // Cari user berdasarkan data payload
+    const admin = await this.userRepository.findOne({ where: { email: payload.email, role: 'admin' } });
+
+    if (!admin) {
+      throw new NotFoundException('Admin tidak ditemukan');
+    }
+
+    // Update the user's last login timestamp
+    await this.userRepository.update(admin.user_id, {
+      last_login_at: new Date(),
+    });
+
+    // Generate access and refresh tokens with custom configurations
+    let access_token = this.jwtService.sign(payload, {
+      secret: this.configService.get<string>('JWT_ADMIN_REFRESH_SECRET'),
+      expiresIn: this.configService.get<string>('JWT_ADMIN_REFRESH_DURATION'),
+    });
+
+    access_token = this.helperService.encryptData(access_token);
+
+    return { access_token, admin };
   }
 
   // ===> VALIDATE USER <===

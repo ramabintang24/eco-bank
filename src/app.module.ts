@@ -13,17 +13,21 @@ import { LogModule } from './log/log.module';
 import { UsersController } from './user/user.controller';
 import { UsersService } from './user/user.service';
 import { UsersModule } from './user/user.module';
+import { AdminModule } from './admin/admin.module';
+import { HelperModule } from './helper/helper.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     DatabaseModule,
     PassportModule,
-    UserModule,
     LogModule,
+    HelperModule,
+    UserModule,
     UsersModule,
+    AdminModule,
   ],
-  controllers: [AppController, UsersController],
+  controllers: [AppController],
   providers: [
     {
       provide: APP_INTERCEPTOR,
