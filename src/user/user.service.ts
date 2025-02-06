@@ -103,6 +103,9 @@ export class UsersService {
     limit: number = 10,
   ): Promise<BasicDataResponse<User[]>> {
     const [users, total] = await this.usersRepository.findAndCount({
+      where: {
+        role: 'User'
+      },
       order: {
         created_at: 'DESC',
       },

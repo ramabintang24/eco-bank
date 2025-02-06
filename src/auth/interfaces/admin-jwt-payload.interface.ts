@@ -1,5 +1,5 @@
 export interface AdminJwtPayload {
-  user_id: string;
+  admin_id: string;
   email: string;
   role: string;
 }
