@@ -1,19 +1,29 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateAdminDto {
-  @IsNotEmpty()
+  @ApiProperty({ example: 'Laptop', description: 'Nama barang yang dijual', required: false })
+  @IsOptional()
   @IsString()
-  nama: string;
+  item?: string;
 
-  @IsNotEmpty()
+  @ApiProperty({ example: 'https://example.com/laptop.jpg', description: 'URL foto produk', required: false })
+  @IsOptional()
   @IsString()
-  barang: string;
+  product_photo?: string;
 
-  @IsNotEmpty()
+  @ApiProperty({ example: 5000, description: 'Harga beli barang dalam rupiah', required: false })
+  @IsOptional()
   @IsNumber()
-  harga: number;
+  purchase_price?: number;
 
-  @IsNotEmpty()
+  @ApiProperty({ example: 5000, description: 'Harga jual barang dalam rupiah', required: false })
+  @IsOptional()
   @IsNumber()
-  stok: number;
+  selling_price?: number;
+
+  @ApiProperty({ example: 10, description: 'Jumlah unit barang yang tersedia', required: false })
+  @IsOptional()
+  @IsNumber()
+  unit?: number;
 }
