@@ -5,12 +5,12 @@ export class UpdateItemDto {
   @ApiProperty({ example: 'Botol Aqua', description: 'Nama barang yang dijual', required: false })
   @IsOptional()
   @IsString()
-  item?: string;
+  name?: string;
 
-  @ApiProperty({ example: 'https://example.com/laptop.jpg', description: 'URL foto produk', required: false })
+  @ApiProperty({ example: 10, description: 'Jumlah unit barang yang tersedia', required: false })
   @IsOptional()
-  @IsString()
-  product_photo?: string;
+  @IsNumber()
+  unit?: number;
 
   @ApiProperty({ example: 5000, description: 'Harga beli barang dalam rupiah', required: false })
   @IsOptional()
@@ -22,8 +22,8 @@ export class UpdateItemDto {
   @IsNumber()
   selling_price?: number;
 
-  @ApiProperty({ example: 10, description: 'Jumlah unit barang yang tersedia', required: false })
-  @IsOptional()
-  @IsNumber()
-  unit?: number;
+  // @ApiProperty({ example: 'https://example.com/laptop.jpg', description: 'URL foto produk', required: false })
+  // @IsOptional()
+  // @IsString()
+  // product_photo?: string;
 }

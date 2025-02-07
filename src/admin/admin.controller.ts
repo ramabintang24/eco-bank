@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Put, Delete, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Patch, Delete, ParseIntPipe } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiConsumes, ApiBody } from '@nestjs/swagger';
 import { AdminService } from './admin.service';
 import { Item } from 'src/transaction/entities/item.entity';
@@ -20,8 +20,8 @@ export class AdminController {
   @ApiOperation({ summary: 'Get admin by ID' })
   @ApiResponse({ status: 200, description: 'Success' })
   @Get('item/:id')
-  getOne(@Param('id', ParseIntPipe) id: number): Promise<Item> {
-    return this.adminService.findOne(id);
+  getOne(@Param('id') itemId: string): Promise<Item> {
+    return this.adminService.findOne(itemId);
   }
 
   @Post('item')
@@ -33,18 +33,20 @@ export class AdminController {
   async create(@Body() createItemDto: CreateItemDto) {
     return this.adminService.saveItem(createItemDto);
   }
-
-  @ApiOperation({ summary: 'Update admin' })
+  
+  @ApiOperation({ summary: 'Update item' })
   @ApiResponse({ status: 200, description: 'Updated' })
-  @Put('item/:id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() data: UpdateItemDto): Promise<Item> {
-    return this.adminService.update(id, data);
+  @ApiResponse({ status: 404, description: 'Item not found' })
+  @Patch('item/:id')
+  async update(@Param('id') itemId: string, @Body() data: UpdateItemDto): Promise<Item> {
+    return this.adminService.update(itemId, data);
   }
 
-  @ApiOperation({ summary: 'Delete admin' })
+  @ApiOperation({ summary: 'Delete item' })
   @ApiResponse({ status: 200, description: 'Deleted' })
+  @ApiResponse({ status: 404, description: 'Item not found' })
   @Delete('item/:id')
-  delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
-    return this.adminService.remove(id);
+  async delete(@Param('id') itemId: string) {
+    return this.adminService.remove(itemId);
   }
 }
