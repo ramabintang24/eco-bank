@@ -7,13 +7,19 @@ import { Wallet } from './entities/wallet.entity';
 export class TransactionService {
     constructor (
      @InjectRepository(Wallet) 
-     private Walletrepository: Repository<Wallet>,
+     private walletRepository: Repository<Wallet>,
     ) {}
 
-    async getWalletByUserId(userId:number):Promise<Wallet> {
-        const Wallet = await this.Walletrepository.findOne({where:{userId} });
-        if (!wallet) {
-          throw new NotFoundException('wallet not ')
-        }
-    }
+    async getWalletByUserId(userId: string): Promise<{ balance: number }> {
+      const wallet = await this.walletRepository.findOne({
+          where: { user_id: userId },
+          select: ['balance'], // Hanya mengambil balance
+      });
+  
+      if (!wallet) {
+          throw new NotFoundException('Wallet not found');
+      }
+  
+      return { balance: wallet.balance };
+  }  
 }
