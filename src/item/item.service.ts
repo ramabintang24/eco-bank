@@ -6,7 +6,7 @@ import { CreateItemDto } from 'src/item/dto/create-item.dto';
 import { UpdateItemDto } from 'src/item/dto/update-item.dto';
 
 @Injectable()
-export class AdminService {
+export class ItemService {
   constructor(
     @InjectRepository(Item)
     private readonly itemRepository: Repository<Item>,

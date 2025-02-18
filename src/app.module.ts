@@ -15,6 +15,7 @@ import { UsersService } from './user/user.service';
 import { UsersModule } from './user/user.module';
 import { AdminModule } from './admin/admin.module';
 import { HelperModule } from './helper/helper.module';
+import { ItemModule } from './item/item.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { HelperModule } from './helper/helper.module';
     UserModule,
     UsersModule,
     AdminModule,
+    ItemModule,
   ],
   controllers: [AppController],
   providers: [

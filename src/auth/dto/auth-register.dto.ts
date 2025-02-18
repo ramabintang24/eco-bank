@@ -1,11 +1,5 @@
 // src/auth/dto/auth-user-register.dto.ts
-import {
-  IsString,
-  IsNotEmpty,
-  IsEmail,
-  Length,
-  MinLength,
-} from 'class-validator';
+import { IsString, IsNotEmpty, IsEmail, MinLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class RegisterDto {
@@ -24,17 +18,6 @@ export class RegisterDto {
   @IsEmail({}, { message: 'Email Tidak Valid' })
   @IsNotEmpty({ message: 'Email Tidak Boleh Kosong' })
   email: string;
-
-  @ApiProperty({
-    description: 'Nomor Telepon',
-    example: '081234567890',
-  })
-  @IsString()
-  @IsNotEmpty({ message: 'Nomor telepon Tidak Boleh Kosong' })
-  @Length(10, 13, {
-    message: 'Nomor telepon harus terdiri dari 10 hingga 13 karakter',
-  })
-  phone: string;
 
   @ApiProperty({
     description: 'Kata Sandi',
