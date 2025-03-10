@@ -16,7 +16,6 @@ import { UsersModule } from './user/user.module';
 import { AdminModule } from './admin/admin.module';
 import { HelperModule } from './helper/helper.module';
 import { ItemModule } from './item/item.module';
-import { TransactionService } from './transaction/transaction.service';
 import { TransactionModule } from './transaction/transaction.module';
 
 @Module({
@@ -47,7 +46,6 @@ import { TransactionModule } from './transaction/transaction.module';
       useClass: AllExceptionFilter,
     },
     AppService,
-    TransactionService,
   ],
 })
 export class AppModule {}

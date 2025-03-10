@@ -129,18 +129,18 @@
       return { access_token, user };
     }
 
-    private generateAdminToken(admin: User) {
+    private generateAdminToken(user: User) {
       const payload: AdminJwtPayload = {
-        admin_id: admin.user_id,
-        email: admin.email,
-        role: admin.role,
+        user_id: user.user_id,
+        email: user.email,
+        role: user.role,
       };
       let access_token = this.jwtService.sign(payload, {
         secret: this.configService.get<string>('JWT_ADMIN_ACCESS_SECRET'),
         expiresIn: this.configService.get<string>('JWT_ADMIN_ACCESS_DURATION'),
       });
       access_token = this.helperService.encryptData(access_token);
-      return { access_token, admin };
+      return { access_token, user };
     }
 
 

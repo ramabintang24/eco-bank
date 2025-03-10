@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Wallet } from './entities/wallet.entity';
@@ -7,19 +7,18 @@ import { Wallet } from './entities/wallet.entity';
 export class TransactionService {
     constructor (
      @InjectRepository(Wallet) 
-     private walletRepository: Repository<Wallet>,
+     private readonly walletRepository: Repository<Wallet>,
     ) {}
 
-    async getWalletByUserId(userId: string): Promise<{ balance: number }> {
+    async getBalance(userId: string) {
       const wallet = await this.walletRepository.findOne({
-          where: { user_id: userId },
-          select: ['balance'], // Hanya mengambil balance
+        where: { user_id: userId }, // Use user_id directly
       });
-  
+    
       if (!wallet) {
-          throw new NotFoundException('Wallet not found');
+        throw new Error('Wallet not found');
       }
-  
-      return { balance: wallet.balance };
-  }  
+    
+      return wallet.balance;  
+    }
 }
