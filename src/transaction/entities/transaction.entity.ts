@@ -14,11 +14,11 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 
 export enum TransactionType {
-  VERIFICATION_REWARD = 'verification_reward',
-  LEARNING_PACKAGE = 'learning_package',
+  Deposit = 'Deposit',
+  Withdraw = 'Withdraw',
 }
 
-@Entity({ schema: 'transaction', name: 'mk_transaction' })
+@Entity({ schema: 'transaction', name: 'eb_transaction' })
 export class Transaction {
   @PrimaryGeneratedColumn('uuid', { name: 'transaction_id' })
   transaction_id: string;
@@ -65,7 +65,7 @@ export class Transaction {
   })
   @ManyToMany(() => User)
   @JoinTable({
-    name: 'mk_wallet',
+    name: 'eb_wallet',
     joinColumn: {
       name: 'wallet_id',
       referencedColumnName: 'wallet_id',

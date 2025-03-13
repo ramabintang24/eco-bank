@@ -23,5 +23,14 @@ export class TransactionController {
     const user = request['user'] as JwtPayload;
     return this.transactionService.getBalance(user.user_id);
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('user/transaction')
+  @ApiBearerAuth()  
+  @ApiOperation({ summary: 'User Balance' })
+  async getUserTransaction(@Request() request: Request) {
+    const user = request['user'] as JwtPayload;
+    return this.transactionService.getUserTransaction(user.user_id);
+  }
   
 }
