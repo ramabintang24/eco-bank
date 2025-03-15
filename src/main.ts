@@ -4,9 +4,12 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import redoc from 'redoc-express';
+import { resolve } from 'path';
+import * as express from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.use('/uploads', express.static(resolve('uploads')));
   const configService = app.get(ConfigService);
 
   app.useGlobalPipes(

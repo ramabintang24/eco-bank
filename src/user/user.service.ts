@@ -68,7 +68,7 @@ export class UsersService {
     user.phone_number = updateProfileDto.phone_number ?? user.phone_number;
 
     if (file) {
-      const uploadDir = path.join(__dirname, '..', '..', 'uploads', 'avatars');
+      const uploadDir = path.resolve('uploads', 'avatar', 'user');
       if (!fs.existsSync(uploadDir)) {
         fs.mkdirSync(uploadDir, { recursive: true });
       }
@@ -87,8 +87,14 @@ export class UsersService {
       // Save the processed image to local storage
       fs.writeFileSync(filePath, buffer);
 
+      console.log('Saving file at:', filePath);
+fs.writeFileSync(filePath, buffer);
+console.log('File saved successfully!');
+
+console.log('File received:', file.originalname, 'Size:', file.size);
+
       // Set the user's profile URL to the local file path (relative to the server root)
-      user.profile_url = `uploads/avatars/${filename}`;
+      user.profile_url = `uploads/avatar/user/${filename}`;
     }
 
     user.updated_at = new Date();
@@ -102,6 +108,9 @@ export class UsersService {
     return this.usersRepository.find({
       where: {
         role: 'User'
+      },
+      order: {
+        created_at: 'DESC'
       }
     });
   }
