@@ -98,32 +98,12 @@ export class UsersService {
   }
 
     // ===> GET LIST USER <===
-  async getListUser(
-    page: number = 1,
-    limit: number = 10,
-  ): Promise<BasicDataResponse<User[]>> {
-    const [users, total] = await this.usersRepository.findAndCount({
+  async getListUser( ): Promise<User[]> {
+    return this.usersRepository.find({
       where: {
         role: 'User'
-      },
-      order: {
-        created_at: 'DESC',
-      },
-      skip: (page - 1) * limit,
-      take: limit,
+      }
     });
-
-    const totalPages = Math.ceil(total / limit);
-
-    return {
-      data: users,
-      pagination: {
-        totalItems: Number(total),
-        itemsPerPage: Number(limit),
-        currentPage: Number(page),
-        totalPages: Number(totalPages),
-      },
-    };
   }
 
   // ===> CHANGE PASSWORD <===

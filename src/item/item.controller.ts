@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Patch, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Patch, Delete, UseGuards, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiConsumes, ApiBody } from '@nestjs/swagger';
 import { ItemService } from './item.service';
 import { Item } from 'src/item/entities/item.entity';
@@ -8,6 +8,7 @@ import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('Item') // Tambahkan Tag untuk Swagger
 @Controller('item') // Perbaiki dari 'barang' menjadi 'admin'
+@UseInterceptors(ClassSerializerInterceptor)
 export class ItemController {
   constructor(private readonly itemService: ItemService) {}
 
@@ -58,3 +59,4 @@ export class ItemController {
     return this.itemService.remove(itemId);
   }
 }
+

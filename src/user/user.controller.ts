@@ -86,9 +86,8 @@ export class UsersController {
   @Get('all-user')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get List All User' })
-  async getListUser(@Query() queryDto: QueryUserDto) {
-    const { page = 1, limit = 10 } = queryDto;
-    return this.usersService.getListUser(page, limit);
+  async getListUser(): Promise<User[]> {
+    return this.usersService.getListUser();
   }
 
   @UseGuards(AuthGuard('jwt'))
