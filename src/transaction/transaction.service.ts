@@ -6,6 +6,7 @@ import { Wallet } from './entities/wallet.entity';
 import { Transaction } from './entities/transaction.entity';
 import { DetailTransaction } from './entities/detail-transaction.entity';
 import { CreateTransactionDto } from './dto/setor.dto';
+import { CreateIncomeDto } from './dto/income.dto';
 
 @Injectable()
 export class TransactionService {
@@ -107,5 +108,37 @@ export class TransactionService {
       }
   
       return transaction; // Pastikan entity Transaction memiliki properti `details`
+    }
+
+    async createIncome(dto: CreateIncomeDto) {
+      const user = await this.userRepository.findOne({
+        where: { email: dto.email },
+      });
+      const wallet = await this.walletRepository.findOne({
+        where: { user_id: user.user_id },
+      });
+      const transaction = this.transactionRepository.create({
+        wallet_id: wallet.wallet_id,
+        total_amount: dto.total_amount,
+        type: 'Deposit',
+      });
+      
+      const savedTransaction = await this.transactionRepository.save(transaction);
+      
+      const detailTransactions = dto.items.map(item => 
+        this.detailTransactionRepository.create({
+          transaction_id: savedTransaction.transaction_id, // Ambil UUID-nya
+          item_id: item.item_id,
+          unit: item.unit,
+          sub_total: item.sub_total,
+        })
+      );
+      
+      await this.detailTransactionRepository.save(detailTransactions);
+      
+      return {
+        transaction: savedTransaction,
+        details: detailTransactions,
+      };
     }
   }

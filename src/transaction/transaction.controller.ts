@@ -5,6 +5,7 @@ import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiResponse, ApiTags
 import { JwtPayload } from 'src/auth/interfaces/jwt-payload.interface';
 import { CreateTransactionDto } from './dto/setor.dto';
 import { Transaction } from './entities/transaction.entity';
+import { CreateIncomeDto } from './dto/income.dto';
 
 @Controller('transaction') 
 export class TransactionController {
@@ -62,9 +63,18 @@ export class TransactionController {
   @ApiOperation({ summary: 'Create New Item' })
   @ApiResponse({ status: 201, description: 'Item Berhasil Ditambahkan' })
   @ApiBody({ type: CreateTransactionDto})
-  async create(@Body() createTransactionDto: CreateTransactionDto) {
+  async createTransaction(@Body() createTransactionDto: CreateTransactionDto) {
     console.log("Received items:", createTransactionDto.items);
     console.log("Received Full:", createTransactionDto);
     return this.transactionService.createTransaction(createTransactionDto);
   }
-}
+
+  @Post('income')
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('admin-jwt'))
+  @ApiResponse({status: 200, description: 'Income Berhasil Ditambahkan'})
+  @ApiBody({ type: CreateIncomeDto})
+    async createIncome(@Body() createIncomeDto: CreateIncomeDto) {
+      return this.transactionService.createIncome(createIncomeDto);
+    }
+  }
