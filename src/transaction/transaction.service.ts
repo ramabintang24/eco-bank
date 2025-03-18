@@ -44,4 +44,17 @@ export class TransactionService {
     
       return transaction;  
     }
-}
+
+    async getDetailTransaction(transactionId: string) {
+      const transaction = await this.transactionRepository.findOne({
+        where: { transaction_id: transactionId },
+        relations: ['details'], // Pastikan ada relasi dengan tabel detail transaksi
+      });
+  
+      if (!transaction) {
+        throw ('Transaction not found');
+      }
+  
+      return transaction; // Pastikan entity Transaction memiliki properti `details`
+    }
+  }

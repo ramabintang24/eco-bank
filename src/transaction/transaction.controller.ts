@@ -33,4 +33,15 @@ export class TransactionController {
     return this.transactionService.getUserTransaction(user.user_id);
   }
   
+  @UseGuards(AuthGuard('jwt'))
+  @Get('detailtransaction')
+  @ApiBearerAuth()
+  @ApiOperation({summary: 'Detail transaction'})
+  async getDetailtransaction(@Request() request: Request) {
+    const user = request['detail'] as JwtPayload;
+    return this.transactionService.getDetailTransaction(user.user_id);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('')
 }
