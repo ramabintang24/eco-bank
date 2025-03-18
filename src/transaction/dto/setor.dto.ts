@@ -4,9 +4,9 @@ import {
   IsNumber,
   IsArray,
   ValidateNested,
+  IsEmail,
 } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
-import { TransactionType } from '../entities/transaction.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
 class TransactionItemDto {
@@ -33,12 +33,9 @@ class TransactionItemDto {
 }
 
 export class CreateTransactionDto {
-  @ApiProperty({
-    example: '123e4567-e89b-12d3-a456-426614174000',
-    description: 'ID dompet yang digunakan untuk transaksi',
-  })
-  @IsUUID()
-  wallet_id: string;
+  @ApiProperty()
+  @IsEmail()
+  email: string;
 
   @ApiProperty({
     example: 1000,
@@ -47,14 +44,6 @@ export class CreateTransactionDto {
   @Transform(({ value }) => Number(value))
   @IsNumber()
   total_amount: number;
-
-  @ApiProperty({
-    example: TransactionType.Deposit,
-    enum: TransactionType,
-    description: 'Jenis transaksi (DEPOSIT atau WITHDRAW)',
-  })
-  @IsEnum(TransactionType)
-  type: TransactionType;
 
   @ApiProperty({
     type: [TransactionItemDto],

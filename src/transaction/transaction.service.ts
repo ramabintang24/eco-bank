@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { User } from 'src/user/entities/user.entity';
 import { Wallet } from './entities/wallet.entity';
 import { Transaction } from './entities/transaction.entity';
 import { DetailTransaction } from './entities/detail-transaction.entity';
@@ -9,6 +10,8 @@ import { CreateTransactionDto } from './dto/setor.dto';
 @Injectable()
 export class TransactionService {
     constructor (
+     @InjectRepository(User) 
+     private readonly userRepository: Repository<User>,
      @InjectRepository(Wallet) 
      private readonly walletRepository: Repository<Wallet>,
      @InjectRepository(Transaction) 
@@ -28,6 +31,16 @@ export class TransactionService {
     
       return wallet.balance;  
     }
+
+    // ===> GET ALL TRANSACTION <===
+    async getAllTransaction(): Promise<Transaction[]> {
+      return this.transactionRepository.find({
+        relations: ['wallet', 'wallet.user'],
+        order: { created_at: 'DESC' }
+      });
+    }
+    
+        
 
     async getUserTransaction(userId: string) {
       const wallet = await this.walletRepository.findOne({
@@ -52,10 +65,16 @@ export class TransactionService {
     }
 
     async createTransaction(dto: CreateTransactionDto) {
+      const user = await this.userRepository.findOne({
+        where: { email: dto.email },
+      });
+      const wallet = await this.walletRepository.findOne({
+        where: { user_id: user.user_id },
+      });
       const transaction = this.transactionRepository.create({
-        wallet_id: dto.wallet_id,
+        wallet_id: wallet.wallet_id,
         total_amount: dto.total_amount,
-        type: dto.type,
+        type: 'Deposit',
       });
       
       const savedTransaction = await this.transactionRepository.save(transaction);
