@@ -76,4 +76,5 @@ export class Transaction {
     },
   })
   user: User[];
+  details: any;
 }
