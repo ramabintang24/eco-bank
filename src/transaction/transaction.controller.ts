@@ -45,6 +45,7 @@ export class TransactionController {
     return this.transactionService.getDetailTransaction(user.user_id);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @ApiTags('admin')
   @UseGuards(AuthGuard('admin-jwt'))
   @Get('admin/history')
@@ -75,4 +76,15 @@ export class TransactionController {
     async createIncome(@Body() createIncomeDto: CreateIncomeDto) {
       return this.transactionService.createIncome(createIncomeDto);
     }
+    @UseGuards(AuthGuard('jwt'))
+  @ApiTags('admin')
+  @UseGuards(AuthGuard('admin-jwt'))
+  @Get('admin/history')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get List All User' })
+  async getAllFinance(): Promise<Transaction[]> {
+    return this.transactionService.getAllFinance();
   }
+  }
+
+  

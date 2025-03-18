@@ -154,4 +154,13 @@ export class TransactionService {
         details: detailTransactions,
       };
     }
+     // ===> GET ALL TRANSACTION <===
+     async getAllFinance(): Promise<Transaction[]> {
+      return this.transactionRepository.find({
+        relations: ['wallet', 'wallet.user'],
+        where: { type: 'Withdraw'},
+        order: { created_at: 'DESC' }
+      });
+    }
+    
   }
