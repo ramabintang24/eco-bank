@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { User } from 'src/user/entities/user.entity';
 import { Wallet } from './entities/wallet.entity';
 import { Transaction } from './entities/transaction.entity';
@@ -34,11 +34,24 @@ export class TransactionService {
     }
 
     // ===> GET ALL TRANSACTION <===
-    async getAllTransaction(): Promise<Transaction[]> {
-      return this.transactionRepository.find({
+    async getAllTransaction(): Promise<any[]> {
+      const transactions = await this.transactionRepository.find({
         relations: ['wallet', 'wallet.user'],
+        where: { type: In(['Deposit', 'Withdraw']) },
         order: { created_at: 'DESC' }
       });
+    
+      return transactions.map(transaction => ({
+        transaction_id: transaction.transaction_id,
+        total_amount: transaction.total_amount,
+        type: transaction.type,
+        created_at: transaction.created_at,
+        wallet_id: transaction.wallet.wallet_id,
+        balance: transaction.wallet.balance,
+        user_id: transaction.wallet.user.user_id,
+        name: transaction.wallet.user.name,
+        email: transaction.wallet.user.email,
+      }));
     }
     
         

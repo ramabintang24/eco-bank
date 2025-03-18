@@ -45,8 +45,6 @@ export class TransactionController {
     return this.transactionService.getDetailTransaction(user.user_id);
   }
 
-  @UseGuards(AuthGuard('jwt'))
-  @Get('')
   @ApiTags('admin')
   @UseGuards(AuthGuard('admin-jwt'))
   @Get('admin/history')
