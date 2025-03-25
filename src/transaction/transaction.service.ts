@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import { User } from 'src/user/entities/user.entity';
@@ -7,6 +7,7 @@ import { Transaction } from './entities/transaction.entity';
 import { DetailTransaction } from './entities/detail-transaction.entity';
 import { CreateTransactionDto } from './dto/setor.dto';
 import { CreateIncomeDto } from './dto/income.dto';
+import { WithdrawDto } from './dto/withdraw.dto';
 
 @Injectable()
 export class TransactionService {
@@ -154,6 +155,7 @@ export class TransactionService {
         details: detailTransactions,
       };
     }
+
      // ===> GET ALL TRANSACTION <===
      async getAllFinance(): Promise<Transaction[]> {
       return this.transactionRepository.find({
@@ -163,4 +165,32 @@ export class TransactionService {
       });
     }
     
+    async withdraw(userId: string, withdrawDto: WithdrawDto): Promise<string> {
+      const { amount } = withdrawDto;
+      
+      if (amount < 5000) {
+        throw new BadRequestException('Minimal tarik tunai adalah Rp5.000');
+      }
+  
+      const wallet = await this.walletRepository.findOne({ where: { user_id: userId } });
+      if (!wallet) {
+        throw new NotFoundException('Dompet tidak ditemukan');
+      }
+  
+      if (wallet.balance < amount) {
+        throw new BadRequestException('Saldo tidak mencukupi');
+      }
+  
+      console.log ('saldo', amount)
+      // Simpan transaksi
+      const transaction = this.transactionRepository.create({
+        wallet_id: wallet.wallet_id,
+        total_amount: amount,
+        type: 'Withdraw',
+        created_at: new Date(),
+      });
+      await this.transactionRepository.save(transaction);
+  
+      return `Tarik tunai sebesar Rp${amount} berhasil.`;
+    }
   }
