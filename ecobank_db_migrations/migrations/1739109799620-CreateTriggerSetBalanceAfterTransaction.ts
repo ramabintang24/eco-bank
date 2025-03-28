@@ -1,6 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
 export class CreateTriggerSetBalanceAfterTransaction1739109799620 implements MigrationInterface {
+    name = 'CreateTriggerSetBalanceAfterTransaction1739109799620'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`

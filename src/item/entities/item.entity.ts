@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Exclude } from 'class-transformer';
+import { DetailTransaction } from 'src/transaction/entities/detail-transaction.entity';
 
 @Entity({ schema: 'transaction', name: 'eb_item' })
 export class Item {
@@ -17,6 +18,12 @@ export class Item {
 
   @Column({ type: 'bigint', default: 0 })
   selling_price: number;
+
+  // @OneToMany(
+  //   () => DetailTransaction,
+  //   (detailTransaction) => detailTransaction.item,
+  // )
+  // details: DetailTransaction[];
 
   @Column({
     type: 'timestamptz',

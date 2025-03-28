@@ -103,17 +103,19 @@ console.log('File received:', file.originalname, 'Size:', file.size);
     return user;
   }
 
-    // ===> GET LIST USER <===
-  async getListUser( ): Promise<User[]> {
-    return this.usersRepository.find({
-      where: {
-        role: 'User'
-      },
-      order: {
-        created_at: 'DESC'
-      }
+  // ===> GET LIST USER <===
+  async getListUser(): Promise<any[]> {
+    const users = await this.usersRepository.find({
+      where: { role: 'User' },
+      order: { created_at: 'DESC' },
+      relations: ['wallet'],
     });
-  }
+  
+    return users.map(({ wallet, ...user }) => ({
+      ...user,
+      balance: wallet?.balance ?? 0, // Ambil balance langsung
+    }));
+  }  
 
   // ===> CHANGE PASSWORD <===
   async changePassword(

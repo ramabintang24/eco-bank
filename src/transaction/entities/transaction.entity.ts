@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { Wallet } from './wallet.entity';
 import { User } from 'src/user/entities/user.entity';
+import { DetailTransaction } from './detail-transaction.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 
@@ -76,5 +77,13 @@ export class Transaction {
     },
   })
   user: User[];
-  details: any;
+
+  @OneToMany(
+    () => DetailTransaction,
+    (detailTransaction) => detailTransaction.transaction,
+    {
+      cascade: true,
+    },
+  )
+  details: DetailTransaction[];
 }

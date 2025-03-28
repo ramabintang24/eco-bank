@@ -1,4 +1,4 @@
-import { Controller, Get, Request, UseGuards, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Request, UseGuards, Post, Body, Param, ClassSerializerInterceptor, UseInterceptors } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -9,6 +9,7 @@ import { CreateIncomeDto } from './dto/income.dto';
 import { WithdrawDto } from './dto/withdraw.dto';
 
 @Controller('transaction') 
+@UseInterceptors(ClassSerializerInterceptor)
 export class TransactionController {
   constructor(private readonly transactionService: TransactionService) {}
 
@@ -37,24 +38,22 @@ export class TransactionController {
     return this.transactionService.getUserTransaction(user.user_id);
   }
 
-  @UseGuards(AuthGuard('jwt'))
-  @Get('detailtransaction')
+  @UseGuards(AuthGuard('admin-jwt'))
+  @Get('detailtransaction/:id')
   @ApiBearerAuth()
-  @ApiOperation({summary: 'Detail transaction'})
-  async getDetailtransaction(@Request() request: Request) {
-    const user = request['detail'] as JwtPayload;
-    return this.transactionService.getDetailTransaction(user.user_id);
+  @ApiOperation({summary: 'Detail Transaction'})
+  async getDetailtransaction(@Param('id') transactionId: string) {
+    return this.transactionService.getDetailTransaction(transactionId);
   }
 
   @ApiTags('admin')
   @UseGuards(AuthGuard('admin-jwt'))
   @Get('admin/history')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Get List All User' })
+  @ApiOperation({ summary: 'Get List All Transaction User' })
   async getAllTransaction(): Promise<Transaction[]> {
     return this.transactionService.getAllTransaction();
   }
-  
 
   @Post('')
   @ApiBearerAuth()

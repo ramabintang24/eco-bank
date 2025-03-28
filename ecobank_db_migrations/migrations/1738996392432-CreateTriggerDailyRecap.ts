@@ -6,7 +6,7 @@ export class CreateTriggerDailyRecap1738996392432 implements MigrationInterface 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
             -- Create or replace the function
-            CREATE OR REPLACE FUNCTION update_daily_recap()
+            CREATE OR REPLACE FUNCTION update_wallet_daily_recap()
             RETURNS TRIGGER AS $$
             DECLARE
                 balance_diff bigint;

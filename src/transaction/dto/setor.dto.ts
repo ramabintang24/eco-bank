@@ -5,6 +5,7 @@ import {
   IsArray,
   ValidateNested,
   IsEmail,
+  IsString,
 } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
@@ -18,9 +19,25 @@ class TransactionItemDto {
   item_id: string;
 
   @ApiProperty({
+    example: 'Pensil',
+    description: 'Nama barang yang dibeli',
+  })
+  @IsString()
+  name: string;
+
+  @ApiProperty({
+    example: 200,
+    description: 'Harga beli barang per unit',
+  })
+  @Transform(({ value }) => Number(value))
+  @IsNumber()
+  purchase_price: number;
+
+  @ApiProperty({
     example: 2,
     description: 'Jumlah unit barang yang dibeli',
   })
+  @Transform(({ value }) => Number(value))
   @IsNumber()
   unit: number;
 
@@ -28,6 +45,7 @@ class TransactionItemDto {
     example: 400,
     description: 'Subtotal harga berdasarkan jumlah unit',
   })
+  @Transform(({ value }) => Number(value))
   @IsNumber()
   sub_total: number;
 }

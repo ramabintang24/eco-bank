@@ -1,6 +1,8 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
 export class CreateTriggerFinanceBankExpenses1739151877530 implements MigrationInterface {
+    name = 'CreateTriggerFinanceBankExpenses1739151877530'
+
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`

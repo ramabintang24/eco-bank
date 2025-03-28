@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
 export class CreateTriggerSetCurrentBalanceBeforeTransaction1739107993613 implements MigrationInterface {
-    name = 'CreateTriggerDailyRecap1738996392432'
+    name = 'CreateTriggerSetCurrentBalanceBeforeTransaction1739107993613'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`

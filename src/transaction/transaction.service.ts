@@ -8,18 +8,21 @@ import { DetailTransaction } from './entities/detail-transaction.entity';
 import { CreateTransactionDto } from './dto/setor.dto';
 import { CreateIncomeDto } from './dto/income.dto';
 import { WithdrawDto } from './dto/withdraw.dto';
+import { Item } from 'src/item/entities/item.entity';
 
 @Injectable()
 export class TransactionService {
     constructor (
-     @InjectRepository(User) 
-     private readonly userRepository: Repository<User>,
-     @InjectRepository(Wallet) 
-     private readonly walletRepository: Repository<Wallet>,
-     @InjectRepository(Transaction) 
-     private readonly transactionRepository: Repository<Transaction>,
-     @InjectRepository(DetailTransaction)
+    @InjectRepository(User) 
+    private readonly userRepository: Repository<User>,
+    @InjectRepository(Wallet) 
+    private readonly walletRepository: Repository<Wallet>,
+    @InjectRepository(Transaction) 
+    private readonly transactionRepository: Repository<Transaction>,
+    @InjectRepository(DetailTransaction)
     private detailTransactionRepository: Repository<DetailTransaction>,
+    @InjectRepository(Item)
+    private readonly itemRepository: Repository<Item>,
     ) {}
 
     async getBalance(userId: string) {
@@ -48,7 +51,7 @@ export class TransactionService {
         type: transaction.type,
         created_at: transaction.created_at,
         wallet_id: transaction.wallet.wallet_id,
-        balance: transaction.wallet.balance,
+        balance: transaction.current_balance,
         user_id: transaction.wallet.user.user_id,
         name: transaction.wallet.user.name,
         email: transaction.wallet.user.email,
@@ -98,31 +101,48 @@ export class TransactionService {
         this.detailTransactionRepository.create({
           transaction_id: savedTransaction.transaction_id, // Ambil UUID-nya
           item_id: item.item_id,
+          item_name: item.name,
           unit: item.unit,
+          purchase_price: item.purchase_price,
           sub_total: item.sub_total,
         })
       );
       
-      await this.detailTransactionRepository.save(detailTransactions);
+      const savedDetailTransaction = await this.detailTransactionRepository.save(detailTransactions);
+      
+      // Update jumlah unit di tabel item
+      for (const item of dto.items) {
+        const existingItem = await this.itemRepository.findOne({ where: { item_id: item.item_id } });
+        if (existingItem) {
+          existingItem.unit = Number(existingItem.unit) + Number(item.unit);
+          await this.itemRepository.save(existingItem);
+        }
+      }
       
       return {
         transaction: savedTransaction,
-        details: detailTransactions,
+        details: savedDetailTransaction,
       };
     }
 
+
     async getDetailTransaction(transactionId: string) {
-      const transaction = await this.transactionRepository.findOne({
+      const transaction = await this.transactionRepository.find({
         where: { transaction_id: transactionId },
-        relations: ['details'], // Pastikan ada relasi dengan tabel detail transaksi
+        relations: [ 'details', 'user' ],
       });
   
       if (!transaction) {
         throw ('Transaction not found');
       }
   
-      return transaction; // Pastikan entity Transaction memiliki properti `details`
-    }
+      return transaction.map(transaction => ({
+        transaction_id: transaction.transaction_id,
+        user: transaction.user,
+        details: transaction.details,
+        total_amount: transaction.total_amount,
+        created_at: transaction.created_at,
+      }));    }
 
     async createIncome(dto: CreateIncomeDto) {
       const user = await this.userRepository.findOne({
