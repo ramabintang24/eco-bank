@@ -16,7 +16,7 @@ export class ItemController {
   @ApiOperation({ summary: 'Get all Item' })
   @ApiResponse({ status: 200, description: 'Berhasil mengambil Semua Data Barang' })
   getAll(): Promise<Item[]> {
-    return this.itemService.findAll();
+    return this.itemService.getItemAll();
   }
 
   @Get('item/:id')

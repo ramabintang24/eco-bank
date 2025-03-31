@@ -34,7 +34,7 @@ export class LogInterceptor implements NestInterceptor {
           ip,
           id_user,
           headers,
-          body: Object.keys(body).length > 0 ? body : rawBody,
+          body: body && Object.keys(body).length > 0 ? body : rawBody,
           responseTime,
           id: 0,
         };

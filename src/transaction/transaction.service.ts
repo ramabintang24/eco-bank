@@ -127,22 +127,23 @@ export class TransactionService {
 
 
     async getDetailTransaction(transactionId: string) {
-      const transaction = await this.transactionRepository.find({
+      const transaction = await this.transactionRepository.findOne({
         where: { transaction_id: transactionId },
-        relations: [ 'details', 'user' ],
+        relations: [ 'details', 'wallet.user' ],
       });
   
       if (!transaction) {
         throw ('Transaction not found');
       }
-  
-      return transaction.map(transaction => ({
+
+      return {
         transaction_id: transaction.transaction_id,
-        user: transaction.user,
+        user: transaction.wallet.user,
         details: transaction.details,
         total_amount: transaction.total_amount,
         created_at: transaction.created_at,
-      }));    }
+      };
+    }
 
     async createIncome(dto: CreateIncomeDto) {
       const user = await this.userRepository.findOne({

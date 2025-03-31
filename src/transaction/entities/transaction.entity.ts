@@ -38,45 +38,15 @@ export class Transaction {
     enum: TransactionType,
     nullable: true,
   })
-  @Transform(
-    ({ value }) => {
-      if (value) {
-        return value
-          .split('_')
-          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-          .join(' ');
-      }
-      return value;
-    },
-    { toPlainOnly: true },
-  ) // Hanya ketika diserialisasi
+  @Transform(({ value }) => value, { toPlainOnly: true })
   type: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
 
-  @ApiProperty({ type: () => [Wallet] })
   @ManyToOne(() => Wallet, (wallet) => wallet.transactions)
   @JoinColumn({ name: 'wallet_id' })
   wallet: Wallet;
-
-  @ApiProperty({
-    description: 'Tag-tag terkait catatan',
-    type: () => [User],
-  })
-  @ManyToMany(() => User)
-  @JoinTable({
-    name: 'eb_wallet',
-    joinColumn: {
-      name: 'wallet_id',
-      referencedColumnName: 'wallet_id',
-    },
-    inverseJoinColumn: {
-      name: 'user_id',
-      referencedColumnName: 'user_id',
-    },
-  })
-  user: User[];
 
   @OneToMany(
     () => DetailTransaction,

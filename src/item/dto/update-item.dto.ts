@@ -13,16 +13,6 @@ export class UpdateItemDto {
   name: string;
 
   @ApiProperty({
-    example: 1,
-    description: 'Jumlah unit barang yang tersedia',
-    required: false,
-  })
-  @IsNotEmpty()
-  @Transform(({ value }) => Number(value))
-  @IsNumber({}, { message: 'unit harus berupa angka' })
-  unit: number;
-
-  @ApiProperty({
     example: 150,
     description: 'Harga beli barang dalam rupiah',
     required: false,

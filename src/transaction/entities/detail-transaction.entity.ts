@@ -8,7 +8,6 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Transaction } from './transaction.entity';
-import { Item } from 'src/item/entities/item.entity';
 
 @Entity({ schema: 'transaction', name: 'eb_detail_transaction' })
 export class DetailTransaction {

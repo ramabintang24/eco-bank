@@ -1,6 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { Exclude } from 'class-transformer';
-import { DetailTransaction } from 'src/transaction/entities/detail-transaction.entity';
 
 @Entity({ schema: 'transaction', name: 'eb_item' })
 export class Item {
@@ -38,7 +37,7 @@ export class Item {
   })
   updated_at: Date;
 
-  @Exclude()
+  // @Exclude()
   @Column({
     type: 'timestamptz',
     nullable: true,
