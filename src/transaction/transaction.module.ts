@@ -7,6 +7,7 @@ import { Transaction } from './entities/transaction.entity';
 import { DetailTransaction } from './entities/detail-transaction.entity';
 import { User } from 'src/user/entities/user.entity';
 import { Item } from 'src/item/entities/item.entity';
+import { BankFinance } from './entities/finance.entity';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { Item } from 'src/item/entities/item.entity';
       Transaction,
       DetailTransaction,
       Item,
+      BankFinance,
     ]),
   ],
   controllers: [TransactionController],

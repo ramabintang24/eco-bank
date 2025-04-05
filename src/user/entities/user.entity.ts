@@ -51,9 +51,7 @@ export class User {
   })
   @Column({ type: 'text', nullable: false })
   @Transform(({ value }) =>
-    value && !value.startsWith('http') && !value.startsWith('https')
-      ? `${process.env.OBJECT_BASE_URL}/${value}`
-      : value,
+    value ? `${process.env.OBJECT_BASE_URL}/${value}` : null,
   )
   profile_url: string;
 

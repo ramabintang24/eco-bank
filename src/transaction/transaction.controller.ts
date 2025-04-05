@@ -1,4 +1,4 @@
-import { Controller, Get, Request, UseGuards, Post, Body, Param, ClassSerializerInterceptor, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Request, UseGuards, Post, Body, Param, ClassSerializerInterceptor, UseInterceptors, Query } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -25,6 +25,15 @@ export class TransactionController {
   @ApiBearerAuth()  
   @ApiOperation({ summary: 'User Balance' })
   async getUserBalance(@Request() request: Request) {
+    const user = request['user'] as JwtPayload;
+    return this.transactionService.getBalance(user.user_id);
+  }
+
+  @UseGuards(AuthGuard('admin-jwt'))
+  @Get('admin/balance')
+  @ApiBearerAuth()  
+  @ApiOperation({ summary: 'Admin Balance' })
+  async getAdminBalance(@Request() request: Request) {
     const user = request['user'] as JwtPayload;
     return this.transactionService.getBalance(user.user_id);
   }
@@ -83,6 +92,14 @@ export class TransactionController {
   @ApiOperation({ summary: 'Get List All User' })
   async getAllFinance(): Promise<Transaction[]> {
     return this.transactionService.getAllFinance();
+  }
+
+  @Get('profit')
+  async getTotalProfit(
+    @Query('filter') filter: 'daily' | 'weekly' | 'monthly' | 'yearly' | 'all' = 'all',
+  ) {
+    const total_profit = await this.transactionService.getTotalProfit(filter);
+    return { total_profit };
   }
 
   @UseGuards(AuthGuard('admin-jwt'))

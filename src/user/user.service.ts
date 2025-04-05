@@ -16,6 +16,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as sharp from 'sharp';
 
+const IMAGE_URL = process.env.OBJECT_BASE_URL;
+
 @Injectable()
 export class UsersService {
   constructor(
@@ -35,17 +37,28 @@ export class UsersService {
   }
 
   // ===> GET USER PROFILE <===
-  async getProfile(userId: string): Promise<User> {
+  async getProfile(userId: string): Promise<any> {
     const user = await this.usersRepository.findOne({
       where: { user_id: userId },
+      relations: ['wallet'],
     });
+  
+    if (!user) return null;
+  
+    const userProfileUrl = `${IMAGE_URL}/${user.profile_url}`;
 
-    if (!user) {
-      throw new NotFoundException('User Tidak Ditemukan');
-    }
-
-    return user;
+    // Destructure data dari user
+    const { wallet, ...userData } = user;
+  
+    return {
+      ...userData, // Semua data user kecuali wallet
+      profile_url: userProfileUrl,
+      balance: wallet?.balance ?? 0, // Ambil balance saja, bukan seluruh objek Wallet
+    };
   }
+  
+  
+  
 
   // ===> UPDATE PROFILE & SAVE AVATAR (using Local Storage) <===
   async updateProfile(
@@ -113,7 +126,8 @@ console.log('File received:', file.originalname, 'Size:', file.size);
   
     return users.map(({ wallet, ...user }) => ({
       ...user,
-      balance: wallet?.balance ?? 0, // Ambil balance langsung
+      profile_url: `${IMAGE_URL}/${user.profile_url}`,
+      balance: wallet?.balance?? 0, // Ambil balance langsung
     }));
   }  
 

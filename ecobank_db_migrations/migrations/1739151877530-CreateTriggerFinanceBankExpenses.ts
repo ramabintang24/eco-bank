@@ -22,7 +22,7 @@ export class CreateTriggerFinanceBankExpenses1739151877530 implements MigrationI
             $$ LANGUAGE plpgsql;
 
             -- Create the after_insert trigger on transaction.eb_transaction
-            CREATE TRIGGER after_transaction_insert_into_eb_bank_finance
+            CREATE TRIGGER after_transaction_insert_income_into_eb_bank_finance
             AFTER INSERT ON transaction.eb_transaction
             FOR EACH ROW
             EXECUTE FUNCTION insert_into_eb_bank_finance();

@@ -13,10 +13,12 @@ import { User } from 'src/user/entities/user.entity';
 import { DetailTransaction } from './detail-transaction.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
+import { BankFinance } from './finance.entity';
 
 export enum TransactionType {
   Deposit = 'Deposit',
   Withdraw = 'Withdraw',
+  Income = 'Income',
 }
 
 @Entity({ schema: 'transaction', name: 'eb_transaction' })

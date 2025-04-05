@@ -12,6 +12,7 @@ import {
   HttpStatus,
   ClassSerializerInterceptor,
   Query,
+  Param,
 } from '@nestjs/common';
 import { UsersService } from './user.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -90,6 +91,15 @@ export class UsersController {
     return this.usersService.getListUser();
   }
 
+  @ApiTags('admin')
+  @UseGuards(AuthGuard('admin-jwt'))
+  @Get('profile/:id')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get User Profile' })
+  async getProfileByAdmin(@Param('id') id: string): Promise<User> {
+    return this.usersService.getProfile(id);
+  }
+  
   @UseGuards(AuthGuard('jwt'))
   @Post('change-password')
   @ApiBearerAuth()
