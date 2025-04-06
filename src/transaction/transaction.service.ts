@@ -233,7 +233,7 @@ export class TransactionService {
       }
   
       const result = await qb.getRawOne();
-      return Number(result.total_profit || 0);
+      return result.total_profit;
     }
 
     async withdraw(userId: string, withdrawDto: WithdrawDto): Promise<string> {

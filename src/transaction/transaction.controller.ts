@@ -94,12 +94,14 @@ export class TransactionController {
     return this.transactionService.getAllFinance();
   }
 
-  @Get('profit')
+  @UseGuards(AuthGuard('admin-jwt'))
+  @ApiTags('admin')
+  @Get('admin/profit')
+  @ApiBearerAuth()
   async getTotalProfit(
     @Query('filter') filter: 'daily' | 'weekly' | 'monthly' | 'yearly' | 'all' = 'all',
   ) {
-    const total_profit = await this.transactionService.getTotalProfit(filter);
-    return { total_profit };
+    return await this.transactionService.getTotalProfit(filter);
   }
 
   @UseGuards(AuthGuard('admin-jwt'))
