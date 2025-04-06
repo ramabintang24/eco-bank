@@ -47,6 +47,6 @@ async function bootstrap() {
     app.use('/docs', redoc(redocOptions));
   }
 
-  await app.listen(process.env.PORT || 14100, '0.0.0.0');
+  await app.listen(process.env.PORT, '0.0.0.0');
 }
 bootstrap();
