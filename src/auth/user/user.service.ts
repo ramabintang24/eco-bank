@@ -46,7 +46,7 @@
         name: registerDto.name,
         password: passwordHash,
         role: 'User',
-        profile_url: this.configService.get<string>('DEFAULT_PROFILE_URL'),
+        profile_url: 'uploads/avatar/default/default.png',
       });
 
       await this.userRepository.save(newUser);

@@ -67,7 +67,7 @@ export class CreateTriggerDailyRecap1738996392432 implements MigrationInterface 
             CREATE TRIGGER update_wallet_daily_recap
             AFTER UPDATE OF balance ON transaction.eb_wallet
             FOR EACH ROW
-            EXECUTE FUNCTION update_daily_recap();
+            EXECUTE FUNCTION update_wallet_daily_recap();
         `);
     }
 
@@ -77,7 +77,7 @@ export class CreateTriggerDailyRecap1738996392432 implements MigrationInterface 
             DROP TRIGGER IF EXISTS update_wallet_daily_recap ON transaction.eb_wallet;
 
             -- Drop the function
-            DROP FUNCTION IF EXISTS update_daily_recap;
+            DROP FUNCTION IF EXISTS update_wallet_daily_recap;
         `);
     }
 
