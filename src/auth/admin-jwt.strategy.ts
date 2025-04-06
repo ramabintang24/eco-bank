@@ -8,7 +8,7 @@ import { HelperService } from 'src/helper/helper.service';
 @Injectable()
 export class AdminJwtStrategy extends PassportStrategy(Strategy, 'admin-jwt') {
   constructor(
-    private readonly configService: ConfigService,
+    configService: ConfigService,
     private readonly helperService: HelperService,
   ) {
     const extract_jwt = ExtractJwt.fromExtractors([
