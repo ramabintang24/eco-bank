@@ -48,7 +48,7 @@ export class ItemService {
       const filePath = path.join(uploadDir, filename);
   
       const buffer = await sharp(file.buffer)
-        .resize(300, 300, {
+        .resize(240, 240, {
           fit: sharp.fit.inside,
           withoutEnlargement: true,
         })
@@ -85,7 +85,7 @@ export class ItemService {
       const filePath = path.join(uploadDir, filename);
   
       const buffer = await sharp(file.buffer)
-        .resize(300, 300, {
+        .resize(240, 240, {
           fit: sharp.fit.inside,
           withoutEnlargement: true,
         })
