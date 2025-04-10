@@ -1,10 +1,21 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { Exclude } from 'class-transformer';
+import { Exclude, Transform } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity({ schema: 'transaction', name: 'eb_item' })
 export class Item {
   @PrimaryGeneratedColumn('uuid')
   item_id: string;
+
+  @ApiProperty({
+    description: 'URL image item',
+    example: 'https://contoh.com/profil/johndoe',
+  })
+  @Column({ type: 'text', nullable: false })
+  @Transform(({ value }) =>
+    value ? `${process.env.OBJECT_BASE_URL}/${value}` : null,
+  )
+  image_url: string;
 
   @Column({ type: 'varchar', length: 255, nullable: false })
   name: string;

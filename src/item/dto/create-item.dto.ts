@@ -12,6 +12,10 @@ export class CreateItemDto {
   @IsString()
   name: string;
 
+  @IsNotEmpty()
+  @ApiProperty({ type: 'array', items: { type: 'string', format: 'binary' } })
+  file?: any[];
+
   @ApiProperty({
     example: 150,
     description: 'Harga beli barang dalam rupiah',
