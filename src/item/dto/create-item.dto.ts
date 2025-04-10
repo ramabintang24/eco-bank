@@ -12,7 +12,6 @@ export class CreateItemDto {
   @IsString()
   name: string;
 
-  @IsNotEmpty()
   @ApiProperty({ type: 'array', items: { type: 'string', format: 'binary' } })
   file?: any[];
 
