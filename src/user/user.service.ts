@@ -95,16 +95,11 @@ export class UsersService {
           fit: sharp.fit.inside,
           withoutEnlargement: true,
         })
+        .toFormat('webp')
         .toBuffer();
 
       // Save the processed image to local storage
       fs.writeFileSync(filePath, buffer);
-
-      console.log('Saving file at:', filePath);
-fs.writeFileSync(filePath, buffer);
-console.log('File saved successfully!');
-
-console.log('File received:', file.originalname, 'Size:', file.size);
 
       // Set the user's profile URL to the local file path (relative to the server root)
       user.profile_url = `uploads/avatar/user/${filename}`;
