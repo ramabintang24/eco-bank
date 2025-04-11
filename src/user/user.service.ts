@@ -167,4 +167,15 @@ export class UsersService {
       message: 'Password berhasil diganti',
     };
   }
+  async remove(userId: string): Promise<{ message: string }> {
+    const user = await this.usersRepository.findOne({
+      where: { user_id: userId },
+    });
+
+    if (!user) {
+      throw new NotFoundException('User Tidak Ditemukan');
+    }
+    await this.usersRepository.update(userId, { deleted_at: new Date() });
+    return { message: 'User berhasil dihapus' };
+  }
 }
