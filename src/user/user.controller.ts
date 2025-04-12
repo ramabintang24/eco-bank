@@ -13,6 +13,7 @@ import {
   ClassSerializerInterceptor,
   Query,
   Param,
+  Delete,
 } from '@nestjs/common';
 import { UsersService } from './user.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -112,4 +113,13 @@ export class UsersController {
   ) {
     return this.usersService.changePassword(req.user, changeNewPassword);
   }
+  @Delete('user/:id')
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard('admin-jwt'))
+    @ApiOperation({ summary: 'Delete user' })
+    @ApiResponse({ status: 200, description: 'Deleted' })
+    @ApiResponse({ status: 404, description: 'Item not found' })
+    async delete(@Param('id') userId: string) {
+      return this.usersService.remove(userId);
+    }
 }
