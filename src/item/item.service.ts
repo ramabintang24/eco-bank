@@ -1,7 +1,6 @@
 import {
   Injectable,
   NotFoundException,
-  BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, IsNull } from 'typeorm';
@@ -81,7 +80,7 @@ export class ItemService {
         fs.mkdirSync(uploadDir, { recursive: true });
       }
   
-      const filename = `${itemId}.webp`;
+      const filename = `${Date.now()}-${file.originalname.split(' ').join('_')}.webp`;
       const filePath = path.join(uploadDir, filename);
   
       const buffer = await sharp(file.buffer)

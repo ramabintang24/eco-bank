@@ -10,7 +10,7 @@ import { JwtPayload } from 'src/auth/interfaces/jwt-payload.interface';
 import { JwtService } from '@nestjs/jwt';
 import { HelperService } from 'src/helper/helper.service';
 import { UpdateProfileDto } from './dto/update-profile.dto';
-import { BasicDataResponse } from 'src/data-format.interceptor';
+// import { BasicDataResponse } from 'src/data-format.interceptor';
 import { ChangeNewPasswordDto } from './dto/change-password.dto';
 import * as fs from 'fs';
 import * as path from 'path';
