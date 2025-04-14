@@ -56,6 +56,13 @@ export class CreateIncomeDto {
   email: string;
 
   @ApiProperty({
+    example: 'Min Eco',
+    description: 'Nama Admin yang Bertugas',
+  })
+  @IsString()
+  admin_name: string;
+
+  @ApiProperty({
     example: 1000,
     description: 'Total jumlah uang dalam transaksi',
   })

@@ -64,6 +64,13 @@ export class CreateTransactionDto {
   total_amount: number;
 
   @ApiProperty({
+    example: 'Min Eco',
+    description: 'Nama Admin yang Bertugas',
+  })
+  @IsString()
+  admin_name: string;
+
+  @ApiProperty({
     type: [TransactionItemDto],
     description: 'Daftar barang dalam transaksi',
   })
