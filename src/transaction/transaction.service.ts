@@ -58,6 +58,7 @@ export class TransactionService {
         user_id: transaction.wallet.user.user_id,
         name: transaction.wallet.user.name,
         email: transaction.wallet.user.email,
+        admin_name: transaction.admin_name,
       }));
     }
     
