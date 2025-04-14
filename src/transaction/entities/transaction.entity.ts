@@ -26,6 +26,9 @@ export class Transaction {
   @PrimaryGeneratedColumn('uuid', { name: 'transaction_id' })
   transaction_id: string;
 
+  @Column('varchar', { length: 255, name: 'admin_name', nullable: true })
+  admin_name: string;
+
   @Column('uuid', { name: 'wallet_id' })
   wallet_id: string;
 

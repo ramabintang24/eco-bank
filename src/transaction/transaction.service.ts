@@ -96,6 +96,7 @@ export class TransactionService {
         wallet_id: wallet.wallet_id,
         total_amount: dto.total_amount,
         type: 'Deposit',
+        admin_name: dto.admin_name
       });
       
       const savedTransaction = await this.transactionRepository.save(transaction);
