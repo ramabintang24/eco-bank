@@ -150,7 +150,7 @@ export class TransactionService {
       };
     }
 
-    async createIncome(dto: CreateIncomeDto, name: string) {
+    async createIncome(dto: CreateIncomeDto) {
       const user = await this.userRepository.findOne({
         where: { email: dto.email, role: 'Admin' },
       });
@@ -161,7 +161,7 @@ export class TransactionService {
         wallet_id: wallet.wallet_id,
         total_amount: dto.total_amount,
         type: 'Income',
-        admin_name: name,
+        admin_name: user.name,
       });
       
       const savedTransaction = await this.transactionRepository.save(transaction);

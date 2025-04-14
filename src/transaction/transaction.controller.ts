@@ -83,10 +83,8 @@ export class TransactionController {
   @ApiBody({ type: CreateIncomeDto })
   async createIncome(
     @Body() createIncomeDto: CreateIncomeDto,
-    @Request() req: any, // ambil request untuk mendapatkan user dari JWT
   ) {
-    const name = req.user.name; // ambil nama dari JWT payload
-    return this.transactionService.createIncome(createIncomeDto, name);
+    return this.transactionService.createIncome(createIncomeDto);
   }
 
   @UseGuards(AuthGuard('admin-jwt'))
