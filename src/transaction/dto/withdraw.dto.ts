@@ -8,11 +8,4 @@ export class WithdrawDto {
   @IsNumber()
   @Min(5000, { message: 'Minimal tarik tunai adalah Rp5.000' })
   amount: number;
-
-  @ApiProperty({
-    example: 'Min Eco',
-    description: 'Nama Admin yang Bertugas',
-  })
-  @IsString()
-  admin_name: string;
 }

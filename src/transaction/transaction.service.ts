@@ -150,7 +150,7 @@ export class TransactionService {
       };
     }
 
-    async createIncome(dto: CreateIncomeDto) {
+    async createIncome(dto: CreateIncomeDto, name: string) {
       const user = await this.userRepository.findOne({
         where: { email: dto.email, role: 'Admin' },
       });
@@ -161,6 +161,7 @@ export class TransactionService {
         wallet_id: wallet.wallet_id,
         total_amount: dto.total_amount,
         type: 'Income',
+        admin_name: name,
       });
       
       const savedTransaction = await this.transactionRepository.save(transaction);
@@ -238,7 +239,7 @@ export class TransactionService {
       return result.total_profit;
     }
 
-    async withdraw(userId: string, withdrawDto: WithdrawDto): Promise<string> {
+    async withdraw(userId: string, withdrawDto: WithdrawDto, name: string): Promise<string> {
       const { amount } = withdrawDto;
       
       if (amount < 5000) {
@@ -261,6 +262,7 @@ export class TransactionService {
         total_amount: amount,
         type: 'Withdraw',
         created_at: new Date(),
+        admin_name: name,
       });
       await this.transactionRepository.save(transaction);
   

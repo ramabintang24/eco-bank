@@ -79,11 +79,15 @@ export class TransactionController {
   @Post('admin/income')
   @ApiBearerAuth()
   @UseGuards(AuthGuard('admin-jwt'))
-  @ApiResponse({status: 200, description: 'Income Berhasil Ditambahkan'})
-  @ApiBody({ type: CreateIncomeDto})
-    async createIncome(@Body() createIncomeDto: CreateIncomeDto) {
-      return this.transactionService.createIncome(createIncomeDto);
-    }
+  @ApiResponse({ status: 200, description: 'Income Berhasil Ditambahkan' })
+  @ApiBody({ type: CreateIncomeDto })
+  async createIncome(
+    @Body() createIncomeDto: CreateIncomeDto,
+    @Request() req: any, // ambil request untuk mendapatkan user dari JWT
+  ) {
+    const name = req.user?.name; // ambil nama dari JWT payload
+    return this.transactionService.createIncome(createIncomeDto, name);
+  }
 
   @UseGuards(AuthGuard('admin-jwt'))
   @ApiTags('admin')
@@ -111,8 +115,10 @@ export class TransactionController {
   @ApiOperation({ summary: 'Create Withdraw' })
   @ApiBody({ type: WithdrawDto})
   @ApiConsumes('application/x-www-form-urlencoded')
-  async withdraw(@Param('id') userId: string, @Body() withdrawDto: WithdrawDto) {
-    return this.transactionService.withdraw(userId, withdrawDto);
+  async withdraw(@Param('id') userId: string, @Body() withdrawDto: WithdrawDto,     @Request() req: any, // ambil request untuk mendapatkan user dari JWT
+) {
+    const name = req.user?.name; // ambil nama dari JWT payload
+    return this.transactionService.withdraw(userId, withdrawDto, name);
   }
   
   }
