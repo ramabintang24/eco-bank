@@ -51,6 +51,13 @@ class TransactionItemDto {
 }
 
 export class CreateTransactionDto {
+  @ApiProperty({
+    example: 'Min Eco',
+    description: 'Nama Admin yang Bertugas',
+  })
+  @IsString()
+  admin_name: string;
+
   @ApiProperty()
   @IsEmail()
   email: string;
@@ -62,13 +69,6 @@ export class CreateTransactionDto {
   @Transform(({ value }) => Number(value))
   @IsNumber()
   total_amount: number;
-
-  @ApiProperty({
-    example: 'Min Eco',
-    description: 'Nama Admin yang Bertugas',
-  })
-  @IsString()
-  admin_name: string;
 
   @ApiProperty({
     type: [TransactionItemDto],
