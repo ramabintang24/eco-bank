@@ -239,7 +239,15 @@ export class TransactionService {
       return result.total_profit;
     }
 
-    async withdraw(userId: string, withdrawDto: WithdrawDto, name: string): Promise<string> {
+    async withdraw(userId: string, withdrawDto: WithdrawDto, email: string): Promise<string> {
+      const admin = await this.userRepository.findOne({
+        where: { email: email}
+      })
+
+      if (!admin) {
+        throw new NotFoundException('Admin Tidak Ditemukan')
+      }
+
       const { amount } = withdrawDto;
       
       if (amount < 5000) {
@@ -262,7 +270,7 @@ export class TransactionService {
         total_amount: amount,
         type: 'Withdraw',
         created_at: new Date(),
-        admin_name: name,
+        admin_name: admin.name,
       });
       await this.transactionRepository.save(transaction);
   

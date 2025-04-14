@@ -85,7 +85,7 @@ export class TransactionController {
     @Body() createIncomeDto: CreateIncomeDto,
     @Request() req: any, // ambil request untuk mendapatkan user dari JWT
   ) {
-    const name = req.user?.name; // ambil nama dari JWT payload
+    const name = req.user.name; // ambil nama dari JWT payload
     return this.transactionService.createIncome(createIncomeDto, name);
   }
 
@@ -117,8 +117,8 @@ export class TransactionController {
   @ApiConsumes('application/x-www-form-urlencoded')
   async withdraw(@Param('id') userId: string, @Body() withdrawDto: WithdrawDto,     @Request() req: any, // ambil request untuk mendapatkan user dari JWT
 ) {
-    const name = req.user?.name; // ambil nama dari JWT payload
-    return this.transactionService.withdraw(userId, withdrawDto, name);
+    const email = req.email; // ambil nama dari JWT payload
+    return this.transactionService.withdraw(userId, withdrawDto, email);
   }
   
   }
